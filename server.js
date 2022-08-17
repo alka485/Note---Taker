@@ -9,3 +9,14 @@ const port = 3001;
 app.use(express.static('public'));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
+
+app.get('/notes' , function (req, res) {
+    res.sendFile(path.join(mainDir,"notes.html"));
+});
+
+app.get('/api/notes', function(req, res){
+    res.sendFile(path.join(__dirname, dbData));
+});
+
+
+
