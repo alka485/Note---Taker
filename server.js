@@ -35,6 +35,22 @@ const readAndAppend = (content, file) => {
   });
 };
 
+const readFile = (file) => {
+  let parsedData = null;
+  fs.readFile(file, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+       parsedData = JSON.parse(data);
+      console.log(parsedData);
+      
+    }
+  });
+
+  return parsedData;
+
+}
+
 app.get('/notes' , function (req, res) {
     res.sendFile(path.join(__dirname,'public/notes.html'));
 });
@@ -43,24 +59,41 @@ app.get('/' , function (req, res) {
   res.sendFile(path.join(__dirname,'index.html'));
 });
 
-app.get('/api/notes',(req, res) => res.json(dbData));
+app.get('/api/notes',(req, res) => {
+
+  fs.readFile("./db/db.json", 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      const  parsedData = JSON.parse(data);
+      console.log(parsedData);
+      res.json(parsedData);
+      
+    }
+  });
+
+  // const data = readFile("./db/db.json")
+  // console.log("inroute");
+  // console.log(data);
+  // res.json(data);  
+});
     
 
 app.post('/api/notes', (req, res)=>{
   console.info(`${req.method} request received to add a review`);
 
-  const{ noteTitle,noteText }= req.body;
+  const{ title,text }= req.body;
 
   if(req.body){
     const dbNote = {
-      noteTitle,
-      noteText,
+      title,
+      text,
       //note_id :uuid(),
 
     };
-    
+    console.log(dbNote);
     readAndAppend(dbNote, './db/db.json');
-    res.json('db added successfully');
+    res.send('db added successfully');
   }else{
     res.error('Error in adding');
   }
