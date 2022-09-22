@@ -17,7 +17,7 @@ const writeToFile = (destination, content) =>
  */
 
 const app = express();
-const PORT = 3005;
+const PORT = process.env.PORT || 3005;
 
 app.use(express.static('public'));
 app.use(express.urlencoded({extended:true}));
@@ -72,32 +72,37 @@ app.get('/api/notes',(req, res) => {
     }
   });
 
-  // const data = readFile("./db/db.json")
-  // console.log("inroute");
-  // console.log(data);
-  // res.json(data);  
 });
     
 
 app.post('/api/notes', (req, res)=>{
-  console.info(`${req.method} request received to add a review`);
-
-  const{ title,text }= req.body;
+    const{ title,text }= req.body;
 
   if(req.body){
     const dbNote = {
       title,
       text,
-      //note_id :uuid(),
-
     };
-    console.log(dbNote);
+    //console.log(dbNote);
     readAndAppend(dbNote, './db/db.json');
     res.send('db added successfully');
   }else{
     res.error('Error in adding');
   }
 });
+
+// app.delete('/api/notes/:id',(req,res)=>{
+  
+//   let db = JSON.parse(fs.readFileSync('db/db.json'))
+//     // removing note with id
+//     let deleteNotes = db.filter(item => item.id !== req.params.id);
+//     // Rewriting note to db.json
+//     fs.writeFileSync('db/db.json', JSON.stringify(deleteNotes));
+//     res.json(deleteNotes);
+    
+
+  
+// })
 
 app.listen(PORT, () =>
   console.log(`Example app listening at http://localhost:${PORT}`)
