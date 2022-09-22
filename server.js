@@ -24,8 +24,7 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
 const readAndAppend = (content, file) => {
-  fs.rea
-  dFile(file, 'utf8', (err, data) => {
+  fs.readFile(file, 'utf8', (err, data) => {
     if (err) {
       console.error(err);
     } else {
