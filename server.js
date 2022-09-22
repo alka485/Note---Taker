@@ -24,7 +24,8 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
 const readAndAppend = (content, file) => {
-  fs.readFile(file, 'utf8', (err, data) => {
+  fs.rea
+  dFile(file, 'utf8', (err, data) => {
     if (err) {
       console.error(err);
     } else {
@@ -55,9 +56,9 @@ app.get('/notes' , function (req, res) {
     res.sendFile(path.join(__dirname,'public/notes.html'));
 });
 
-app.get('/' , function (req, res) {
-  res.sendFile(path.join(__dirname,'index.html'));
-});
+// app.get('/' , function (req, res) {
+//   res.sendFile(path.join(__dirname,'index.html'));
+// });
 
 app.get('/api/notes',(req, res) => {
 
@@ -103,6 +104,10 @@ app.post('/api/notes', (req, res)=>{
 
   
 // })
+
+app.get('/' , function (req, res) {
+  res.sendFile(path.join(__dirname,'index.html'));
+});
 
 app.listen(PORT, () =>
   console.log(`Example app listening at http://localhost:${PORT}`)
